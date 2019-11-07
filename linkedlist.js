@@ -121,8 +121,7 @@ function size(list) {
 }
 
 function isEmpty(list) {
-  if (list.head === null)
-    return 'is empty';
+  if (list.head === null) return 'is empty';
   return 'is not empty';
 }
 
@@ -131,59 +130,59 @@ function findPrevious(list, item) {
   while (currNode.next.value !== item) {
     currNode = currNode.next;
   }
-  if (!currNode)
-    return null;
+  if (!currNode) return null;
   return JSON.stringify(currNode);
 }
 
 function findLast(list) {
   let currNode = list.head;
-  if (!currNode)
-    return null;
+  if (!currNode) return null;
   while (currNode.next !== null) {
     currNode = currNode.next;
   }
   return JSON.stringify(currNode);
 }
 
-function reverse(list) {
+function recursive(node) {
+  if (node.next === null) {
+    return node;
+  }
+  let nodeNext = node.next;
+  node.next = null;
+  nodeNext.next = node;
+  let reverseRemaining = recursive(nodeNext);
+  return reverseRemaining;
+}
+
+function third(list) {
   let currNode = list.head;
-  let prevNode = list.head;
-  let nextNode = list.head;
-  while (nextNode !== null) {
-    currNode.next = prevNode;
-    prevNode = currNode;
-    currNode = nextNode;
-    nextNode = nextNode.next;
+  while (currNode.next.next.next) {
+    currNode = currNode.next;
   }
-
-  return list;
+  return currNode;
 }
 
-function recursiveReverse(list, currNode, prevNode) {
-  if (!currNode)
-    currNode = list.head;
-  if (!prevNode)
-    prevNode = list.head;
+function middle(list) {
+  let doubleNode = list.head;
+  let singleNode = list.head;
 
-  if (currNode.next === null) {
-    list.head = currNode;
-    return;
+  while (doubleNode && doubleNode.next !== null) {
+    singleNode = singleNode.next;
+    doubleNode = doubleNode.next.next;
   }
-
-  // let tempNode = prevNode;
-  // currNode.next = prevNode;
-  recursiveReverse(list, currNode.next, currNode);
-  // currNode.next = tempNode;
-  return list;
+  return singleNode;
 }
-
-// 1     2    3      4
-// H2     3   4      null  before
-// null  1   2      3(h)   after
-
 
 function main() {
+  const cycleList = new LinkedList();
+  cycleList.insertFirst('Apollo');
+  cycleList.insertLast('Boomer');
+  cycleList.insertLast('Helo');
+  let sNode = cycleList.find('Helo');
+  let firstNode = cycleList.find('Apollo');
+  sNode.next = firstNode;
+  console.log(cycleList.find('Helo'));
+  console.log(cycleList.find('Apollo'));
   const SLL = new LinkedList();
   SLL.insertFirst('Apollo');
   SLL.insertLast('Boomer');
@@ -201,15 +200,16 @@ function main() {
   const emptySLL = new LinkedList();
 
   display(SLL);
-  console.log(`size of SLL is ${size(SLL)}`);
-  console.log(`SLL ${isEmpty(SLL)}`);
-  console.log(`emptySLL ${isEmpty(emptySLL)}`);
-  console.log(`node before Starbuck: ${findPrevious(SLL, 'Starbuck')}`);
-  console.log(`last node in SLL is ${findLast(SLL)}`);
-  
-  // console.log(JSON.stringify(reverse(SLL)));
-  console.log(JSON.stringify(recursiveReverse(SLL)));
+  // console.log(`size of SLL is ${size(SLL)}`);
+  // console.log(`SLL ${isEmpty(SLL)}`);
+  // console.log(`emptySLL ${isEmpty(emptySLL)}`);
+  // console.log(`node before Starbuck: ${findPrevious(SLL, 'Starbuck')}`);
+  // console.log(`last node in SLL is ${findLast(SLL)}`);
 
+  console.log(JSON.stringify(third(SLL)));
+  console.log(JSON.stringify(middle(SLL)));
+  // console.log(recursive(SLL.head));
+  console.log(checkCycle(SLL))
 }
 
 main();
@@ -225,11 +225,39 @@ function WhatDoesThisProgramDo(lst) {
     while (newNode.next !== null) {
       if (newNode.next.value === current.value) {
         newNode.next = newNode.next.next;
-      }
-      else {
+      } else {
         newNode = newNode.next;
       }
     }
     current = current.next;
   }
+}
+
+//if(!currentNode.next.next)
+
+function cycleList() {
+  cycleList.insertFirst('Apollo');
+  cycleList.insertLast('Boomer');
+  cycleList.insertLast('Helo');
+  let sNode = cycleList.find('Helo');
+  let firstNode = cycleList.find('Apollo');
+  sNode.next = firstNode;
+  console.log(cycleList.find('Helo'));
+  console.log(cycleList.find('Apollo'));
+}
+
+function checkCycle(list) {
+  let currNode = list.head;
+  let cycleNode = list.head;
+
+  while (currNode !== null) {
+    while (cycleNode !== null) {
+      if (cycleNode.next === currNode) {
+        return 'ITS A CYCLE';
+      }
+      cycleNode = cycleNode.next;
+    }
+    currNode = currNode.next;
+  }
+  return 'Not a cycle';
 }

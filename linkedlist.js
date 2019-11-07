@@ -1,3 +1,4 @@
+/* eslint-disable strict */
 //Create a linked list class with all the things.
 
 class _Node {
@@ -98,6 +99,29 @@ class LinkedList {
   }
 }
 
+function display(list) {
+  let currNode = list.head;
+
+  while (currNode.next !== null) {
+    console.log(currNode));
+    currNode = currNode.next;
+  }
+
+}
+
+function size(list) {
+
+}
+function isEmpty(list) {
+
+}
+function findPrevious(list) {
+
+}
+function findLast(list) {
+
+}
+
 function main() {
   const SLL = new LinkedList();
   SLL.insertFirst('Apollo');
@@ -114,6 +138,8 @@ function main() {
   SLL.insertAt('Kat', 3);
   SLL.remove('Tauhida');
   console.log(SLL.find('Tauhida'));
+
+  display(SLL);
 }
 
 main();

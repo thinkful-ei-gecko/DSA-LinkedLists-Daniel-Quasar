@@ -103,8 +103,7 @@ function display(list) {
   let currNode = list.head;
 
   while (currNode !== null) {
-    let nodeObject = JSON.stringify(currNode.value);
-    console.log(nodeObject);
+    console.log(currNode.value);
     currNode = currNode.next;
   }
 }
@@ -143,16 +142,47 @@ function findLast(list) {
   return JSON.stringify(currNode);
 }
 
-function recursive(node) {
-  if (node.next === null) {
+function recursiveReverse(node) {
+  // if 0 nodes in list
+  if(node == null) {
+    return null;
+  }
+  
+  // if 1 node in list
+  if (node.next == null) {
     return node;
   }
-  let nodeNext = node.next;
+
+  const nodeNext = node.next;
   node.next = null;
+  const reverseRemaining = recursiveReverse(nodeNext);
   nodeNext.next = node;
-  let reverseRemaining = recursive(nodeNext);
   return reverseRemaining;
 }
+
+// iterative reverse
+function reverse(lst) {
+  // slowly create the list by adding to reversedPart
+  let reversedPart = null;
+  let current = lst.head;
+ 
+  while(current !== null) {
+    // assign the next node to savedNode for safe keeping
+    let savedNode = current.next;
+    // Reassigns current's pointer to the new list we are making
+    // reversedPart starts as null, but slowly grows as things are
+    // pushed onto the new list
+    current.next = reversedPart;
+    reversedPart = current;
+    // update the counter that is traveling through the array
+    current = savedNode;
+  }
+  // update the head so we have access to the linked list
+  lst.head = reversedPart;
+  //displayList(lst);
+  return lst;
+}
+
 
 function third(list) {
   let currNode = list.head;
@@ -174,15 +204,15 @@ function middle(list) {
 }
 
 function main() {
+  const emptySLL = new LinkedList();
   const cycleList = new LinkedList();
-  cycleList.insertFirst('Apollo');
-  cycleList.insertLast('Boomer');
-  cycleList.insertLast('Helo');
-  let sNode = cycleList.find('Helo');
-  let firstNode = cycleList.find('Apollo');
+  cycleList.insertFirst('1stitem');
+  cycleList.insertLast('2nditem');
+  cycleList.insertLast('3rditem');
+  let sNode = cycleList.find('3rditem');
+  let firstNode = cycleList.find('1stitem');
   sNode.next = firstNode;
-  console.log(cycleList.find('Helo'));
-  console.log(cycleList.find('Apollo'));
+
   const SLL = new LinkedList();
   SLL.insertFirst('Apollo');
   SLL.insertLast('Boomer');
@@ -197,7 +227,6 @@ function main() {
   SLL.insertAt('Kat', 3);
 
   SLL.remove('Tauhida');
-  const emptySLL = new LinkedList();
 
   display(SLL);
   // console.log(`size of SLL is ${size(SLL)}`);
@@ -206,10 +235,14 @@ function main() {
   // console.log(`node before Starbuck: ${findPrevious(SLL, 'Starbuck')}`);
   // console.log(`last node in SLL is ${findLast(SLL)}`);
 
-  console.log(JSON.stringify(third(SLL)));
-  console.log(JSON.stringify(middle(SLL)));
-  // console.log(recursive(SLL.head));
-  console.log(checkCycle(SLL))
+  // console.log(JSON.stringify(third(SLL)));
+  // console.log(JSON.stringify(middle(SLL)));
+  
+  reverse(SLL);
+  display(SLL);
+  recursiveReverse(SLL.head);
+  display(SLL);
+  // console.log(checkCycle(SLL));
 }
 
 main();
@@ -231,19 +264,6 @@ function WhatDoesThisProgramDo(lst) {
     }
     current = current.next;
   }
-}
-
-//if(!currentNode.next.next)
-
-function cycleList() {
-  cycleList.insertFirst('Apollo');
-  cycleList.insertLast('Boomer');
-  cycleList.insertLast('Helo');
-  let sNode = cycleList.find('Helo');
-  let firstNode = cycleList.find('Apollo');
-  sNode.next = firstNode;
-  console.log(cycleList.find('Helo'));
-  console.log(cycleList.find('Apollo'));
 }
 
 function checkCycle(list) {

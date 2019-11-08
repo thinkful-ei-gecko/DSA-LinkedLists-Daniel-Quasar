@@ -40,8 +40,8 @@ class DLinkedList {
       }
       currentNode = currentNode.next;
     }
-    if (currentNode === this.last) {
-      insertLast(item);
+    if (currentNode === this.tail) {
+      this.insertLast(item);
     }
     else {
       let newNode = new _Node(item, currentNode.next, currentNode);
@@ -91,9 +91,9 @@ function displayList(list) {
   }
 }
 
-function size(lst) {
+function size(list) {
   let counter = 0;
-  let currNode = lst.head;
+  let currNode = list.head;
   if (!currNode) {
     return counter;
   }
@@ -120,30 +120,28 @@ function reverseDLL(lst) {
   }
   tempNode = lst.head;
   lst.head = lst.tail;
-  lst.tail = tempNode
+  lst.tail = tempNode;
 }
 
 function main() {
 
   let dll = new DLinkedList();
   dll.insertFirst('Aquaria');
-  //add the following items in your doubly linked list. 
-  //`Aquaria, Caprica, Gemenon, Picon, Sagittaron`
-
   dll.insertLast('Caprica');
   dll.insertLast('Gemenon');
   dll.insertLast('Picon');
   dll.insertLast('Sagittaron');
 
-  //console.log(dll);
-
   //* Add `Tauron` to the list
+  dll.insertLast('Tauron');
   //* Remove `Picon` from the list
+  dll.remove('Picon');
 
-  //dll.remove('Picon');
-  //console.log(size(dll));
-  //console.log(dll);
+  displayList(dll);
+  console.log(size(dll));
+  
   reverseDLL(dll);
+  displayList(dll);
   console.log(dll);
 
 }
